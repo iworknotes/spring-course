@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans>
+    <!--
+        依赖注入：A依赖于B；把B注入到A中
+        1、那些类需要管理
+        2、怎么告诉我这些类（写bean）
+        3、怎么维护依赖关系（setter或constructor）
+        4、怎么体现setter或constructor（）
+    -->
+
+    <bean id="dao" class="com.cc.copycat.dao.UserDaoImpl"></bean>
+
+    <bean id="service" class="com.cc.copycat.service.UserServiceImpl">
+        <property name="userDao" ref="dao"></property>
+    </bean>
+
+</beans>

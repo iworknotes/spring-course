@@ -15,6 +15,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void find() {
         userDao.query();
-        System.out.println("do find.");
+        System.out.println("service.");
     }
 }
