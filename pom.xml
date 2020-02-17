@@ -8,6 +8,9 @@
     <artifactId>course-base</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+    <modules>
+        <module>spring-ioc</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
