@@ -6,6 +6,7 @@
        default-autowire="byType">
 
     <bean id="userDao" class="com.cc.ioc.dao.impl.UserDaoImpl"></bean>
+    <bean id="userDao2" class="com.cc.ioc.dao.impl.UserDaoImpl2"></bean>
 
     <bean id="userService" class="com.cc.ioc.service.impl.UserServiceImpl">
         <property name="dao" ref="userDao"></property>
