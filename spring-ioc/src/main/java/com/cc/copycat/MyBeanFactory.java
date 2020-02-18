@@ -6,6 +6,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,7 +42,7 @@ public class MyBeanFactory {
                 Attribute attributeClazz = childFirst.attribute("class");
                 String clazzName = attributeClazz.getValue();
                 Class clazz = Class.forName(clazzName);
-                Object object = clazz.newInstance();
+                Object object = null;
 
                 /**
                  * 维护依赖关系(看这个对象有没有依赖，判断是否有property属性)
@@ -54,6 +55,7 @@ public class MyBeanFactory {
                      * 3、通过field的set方法set那个对象
                      */
                     if (childSecond.getName().equals("property")) {
+                        object = clazz.newInstance();
                         // 获取到注入对象
                         String refValue = childSecond.attribute("ref").getValue();
                         Object injetObject = map.get(refValue);
@@ -64,7 +66,16 @@ public class MyBeanFactory {
                         field.setAccessible(true);
                         // 通过field对象的set方法，设置所在对象中的值
                         field.set(object, injetObject);
+                    } else if (childSecond.getName().equals("constructor-arg")) {
+                        String refValue = childSecond.attribute("ref").getValue();
+                        Object injetObject = map.get(refValue);
+                        Constructor constructor = clazz.getConstructor(injetObject.getClass().getInterfaces());
+                        object = constructor.newInstance(injetObject);
                     }
+                }
+
+                if (object == null) {
+                    object = clazz.newInstance();
                 }
 
                 map.put(beanName, object);
